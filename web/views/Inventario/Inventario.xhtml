@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../plantilla/plantilla.xhtml">
+
+            <ui:define name="content">
+                <h1>PRODUCTOS</h1>
+
+                <h:form>
+                    <p:commandButton value="Nuevo Producto" actionListener="#{inventarioBean.prepareInventario()}"
+                                     oncomplete="PF('dialogNuevoProducto').show()"
+                                     update="formNuevoInventario"/>
+                </h:form>
+
+                <h:form id="formListaInventario">
+                    <p:dataTable id="tablaInventario" paginator="true" paginatorPosition="top" 
+                                 var="inventario" value="#{inventarioBean.inventarios}">
+                        <p:column headerText="Código del producto"> 
+                            <h:outputText value="#{inventario.id}"/>
+                        </p:column>
+                        <p:column headerText="Nombre del producto">
+                            <h:outputText value="#{inventario.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Marca">
+                            <h:outputText value="#{inventario.marca}"/>
+                        </p:column>
+                        <p:column headerText="Categoria">
+                            <h:outputText value="#{inventario.categoria}"/>
+                        </p:column>
+                        <p:column headerText="Ciudad">
+                            <h:outputText value="#{inventario.ciudad}"/>
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{inventario.cantidad}"/>
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{inventario.precio}"/>
+                        </p:column>
+                        <p:column headerText="Modificar">
+                            <p:commandButton value="Modificar"
+                                             oncomplete="PF('dialogModificarInventario').show()"
+                                             update="formModificarInventario">
+                                <f:setPropertyActionListener target="#{inventarioBean.inventario}" value="#{inventario}"/>
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="Eliminar">
+                            <p:commandButton value="Eliminar"
+                                             oncomplete="PF('dialogEliminarInventario').show()"
+                                             update="formEliminarInventario">
+                                <f:setPropertyActionListener target="#{inventarioBean.inventario}" value="#{inventario}"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <h:form id="formNuevoInventario">
+                    <p:dialog id="dlgNuevoInventario" widgetVar="dialogNuevoInventario" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true">
+                        <p:panelGrid columns="2" style="margin: 0 auto">
+                            <p:outputLabel value="Nombre del producto"/>
+                            <p:inputText value="#{inventarioBean.inventario.nombre}"/>
+
+                            <p:outputLabel value="Marca"/>
+                            <p:inputText value="#{inventarioBean.inventario.marca}"/>
+
+                            <p:outputLabel value="Catgoria"/>
+                            <p:inputText value="#{inventarioBean.inventario.categoria}"/>
+
+                            <p:outputLabel value="Ciudad"/>
+                            <p:inputText value="#{inventarioBean.inventario.ciudad}"/>
+
+                            <p:outputLabel value="Cantidad"/>
+                            <p:inputText value="#{inventarioBean.inventario.cantidad}"/>
+
+                            <p:outputLabel value="Precio"/>
+                            <p:inputText value="#{inventarioBean.inventario.precio}"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Guardar" actionListener="#{inventarioBean.insertInventario()}"
+                                         update="formListaInventarios:tablaInventarios"
+                                         oncomplete="PF('dialogNuevoInventario').hide()"/>
+                        <p:commandButton value="Cancelar" oncomplete="PF('dialogNuevoInventario').hide()"/>
+
+                    </p:dialog>
+
+                </h:form>
+
+                <h:form id="formModificarInventario">
+                    <p:dialog id="dlgModificarInventario" widgetVar="dialogModificarInventario" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true">
+                        <p:panelGrid columns="2" style="margin: 0 auto">
+                            <p:outputLabel value="Nombre del producto"/>
+                            <p:inputText value="#{inventarioBean.inventario.nombre}"/>
+
+                            <p:outputLabel value="Marca"/>
+                            <p:inputText value="#{inventarioBean.inventario.marca}"/>
+
+                            <p:outputLabel value="Catgoria"/>
+                            <p:inputText value="#{inventarioBean.inventario.categoria}"/>
+
+                            <p:outputLabel value="Ciudad"/>
+                            <p:inputText value="#{inventarioBean.inventario.ciudad}"/>
+
+                            <p:outputLabel value="Cantidad"/>
+                            <p:inputText value="#{inventarioBean.inventario.cantidad}"/>
+
+                            <p:outputLabel value="Precio"/>
+                            <p:inputText value="#{inventarioBean.inventario.precio}"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Guardar" actionListener="#{inventarioBean.updateInventario()}"
+                                         update="formListaInventarios:tablaInventarios"
+                                         oncomplete="PF('dialogModificarInventario').hide()"/>
+                        <p:commandButton value="Cancelar" oncomplete="PF('dialogModificarInventario').hide()"/>
+
+                    </p:dialog>
+
+                </h:form>
+
+                <h:form id="formEliminarInventario">
+                    <p:dialog id="dlgEliminarInventario" widgetVar="dialogEliminarInventario" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true">
+                        <h:outputText value="Desea eliminar el inventario "/>
+
+                        <p:commandButton value="SI" actionListener="#{inventarioBean.deleteInventario()}"
+                                         update="formListaInventarios:tablaInventarios"
+                                         oncomplete="PF('dialogEliminarInventario').hide()"/>
+                        <p:commandButton value="NO" oncomplete="PF('dialogEliminarInventario').hide()"/>
+
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+
+
+
+        </ui:composition>
+
+    </body>
+</html>
